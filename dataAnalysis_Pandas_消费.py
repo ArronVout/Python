@@ -15,7 +15,7 @@ HOTEL_LIST=["集团本部","长江半岛酒店","湄潭酒店","土城圣地客�
 COL = ["酒店","卡号","客户姓名","消费金额","前台房号","前台账号","餐饮单号","操作时间","操作员"]
 TODAY_FILE = "会员卡充值清单_"+time.strftime("%Y-%m-%d",time.localtime())+".xlsx"  #生成当天的文件
 JIUCOL = ["卡号","客户姓名","消费金额","操作时间"]
-CONFIG = "config.xlsx"
+CONFIG = "config.xls"
 XF = "酒类卡消费清单.xls"
 ##-------config info  end------
 
@@ -47,7 +47,8 @@ df = pd.read_excel(io_new)  # 读取最新导出的消费信息
 
 #导出酒类卡的清单信息
 write_config = pd.io.excel.ExcelFile(CONFIG)
-cardlist = pd.read_excel(CONFIG, sheet_name="cardlist",index=False)
+##cardlist = pd.read_excel(CONFIG, sheet_name="cardlist",index=False)  #家里
+cardlist = pd.read_excel(write_config, sheet_name="cardlist")   #办公室用，只能xls
 ##print(cardlist)
 CardInfo = cardlist["卡号"]
 ##print("--------酒卡清单-------------》")
@@ -148,12 +149,6 @@ for hotelname in HOTEL_LIST:
         except:
             print("meiyou sheet")
             Input = pd.DataFrame([],columns = COL)
-
-##        NewInfo = np.abs(NewInfo) 当前是Series类型
-##        sum1 = pd.Series(["","","","",NewInfo["充值金额"].cumsum(),"",""])
-##        NewInfo.add(sum1)
-##        NewInfo = NewInfo.add(pd.Series("","","",NewInfo["充值金额"].cumsum(),"",""))
-        
         Input = Input.append(NewInfo)
                     
         print("添加后,增加求和的----->Input")
